@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin panel</title>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">USER INFO WITH MAIL AND ROLES</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Logout</a>
+        </li>
+    </ul>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            ADMIN
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            USER
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="background: #f6f7f8">
+            <br>
+
+            <h1>Admin panel</h1>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="users-table" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Users table</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="new-user" data-bs-toggle="tab" data-bs-target="#new_user" type="button" role="tab" aria-controls="new_user" aria-selected="false">New user</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="users-table" >
+                    <h2 style="background: #e5eaea">All users</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Login</th>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>age</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user:${users}">
+                                <td th:text="${user.id}"></td>
+                                <td th:text="${user.login}"></td>
+                                <td th:text="${user.firstName}"></td>
+                                <td th:text="${user.lastName}"></td>
+                                <td th:text="${user.age}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.roles}"></td>
+                                <td><button type="button" class="btn btn-success">Edit</button></td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="new_user" role="tabpanel" aria-labelledby="new-user" >
+                    <div class="container-fluid">
+                    <h2 style="background: #e5eaea">Add new user</h2>
+                    <br/>
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col">
+                                <form class="align-items-center" th:action="@{/admin}" method="post">
+                                    <div class="mb-3">
+                                        <label for="login" class="form-label d-flex justify-content-center">Login</label>
+                                        <input type="text" class="form-control" id="login" aria-describedby="loginHelp" style="background: #f8cf57">
+                                        <div id="loginHelp" class="form-text d-flex justify-content-center">5-10 symbols</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="firstname" class="form-label d-flex justify-content-center">Firstname</label>
+                                        <input type="text" class="form-control" id="firstname" aria-describedby="firstnameHelp" style="background: #f8cf57">
+                                        <div id="firstnameHelp" class="form-text d-flex justify-content-center">3-40 symbols</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="lastname" class="form-label d-flex justify-content-center">Lastname</label>
+                                        <input type="text" class="form-control" id="lastname" aria-describedby="lastnameHelp" style="background: #f8cf57">
+                                        <div id="lastnameHelp" class="form-text d-flex justify-content-center">3-40 symbols</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="age" class="form-label d-flex justify-content-center">Age</label>
+                                        <input type="number" min="1" class="form-control" id="age" aria-describedby="ageHelp">
+                                        <div id="ageHelp" class="form-text d-flex justify-content-center">1-120</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Email</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" style="background: #f8cf57">
+                                        <div id="emailHelp" class="form-text d-flex justify-content-center">We'll never share your email with anyone else.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label d-flex justify-content-center">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1" aria-describedby="passHelp" >
+                                        <div id="passHelp" class="form-text d-flex justify-content-center">6+ symbols</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="roles" class="form-label d-flex justify-contentQ-center">Roles</label>
+                                        <select class="form-control" id="roles" th:field="*{roles}">
+                                            <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.getName()}"/>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn-success form-control">Add new user</button>
+                                </form>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+</body>
+</html>
