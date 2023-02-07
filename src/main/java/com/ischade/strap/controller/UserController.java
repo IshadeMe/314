@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public String getInfo(Model model, Authentication authentication) {
-        model.addAttribute("userInfo", userService.getUserById(((User) authentication.getPrincipal()).getId()));
-        return null;
+        model.addAttribute("current", userService.getUserById(((User) authentication.getPrincipal()).getId()));
+        return "user";
     }
 }

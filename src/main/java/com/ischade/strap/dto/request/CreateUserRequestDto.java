@@ -2,9 +2,10 @@ package com.ischade.strap.dto.request;
 
 import com.ischade.strap.model.Role;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
 import java.util.List;
-
+@Builder
 public record CreateUserRequestDto(
         @NotBlank @Size(min = 5, max = 10) String login,
         @NotBlank @Size(min = 3, max = 40) String firstName,

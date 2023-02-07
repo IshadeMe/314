@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -28,11 +27,15 @@ public class Role implements GrantedAuthority {
 
     @Transient
     @ManyToMany(mappedBy = "roles")
-    @ToString.Exclude
     List<User> users;
 
     @Override
     public String getAuthority() {
+        return "ROLE_" + name;
+    }
+
+    @Override
+    public String toString() {
         return name;
     }
 }

@@ -2,17 +2,25 @@ package com.ischade.strap.dto.response;
 
 import com.ischade.strap.model.Role;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Builder
 public record UserDetailsDto(
-        @Positive int id,
-        @NotBlank String login,
-        @NotBlank String firstName,
-        @NotBlank String lastName,
-        @Min(1) @Max(120) byte age,
-        @NotBlank @Email String email,
-        @NotEmpty List<Role> roles
-) { }
+        int id,
+        String login,
+        String firstName,
+        String lastName,
+        byte age,
+        String email,
+        List<Role> roles
+) {
+    public String rolesStr() {
+        return roles.stream().map(Object::toString)
+                .collect(Collectors.joining(" "));
+    }
+}
 
 

@@ -1,6 +1,7 @@
 package com.ischade.strap.controller;
 
 import com.ischade.strap.dto.request.CreateUserRequestDto;
+import com.ischade.strap.dto.request.UpdateUserRequestDto;
 import com.ischade.strap.model.User;
 import com.ischade.strap.service.RoleService;
 import com.ischade.strap.service.UserService;
@@ -30,16 +31,32 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleService.getRoles());
         model.addAttribute("current", userService.getUserById(((User) auth.getPrincipal()).getId()));
-        System.out.println("hihihi");
+        model.addAttribute("user", CreateUserRequestDto.builder().build());
+        model.addAttribute("update", UpdateUserRequestDto.builder().build());
         return "admin";
     }
 
-    @PostMapping(consumes = "application/x-www-form-urlencoded")
+    @PostMapping
     public String createUser(@Valid CreateUserRequestDto dto, BindingResult br) {
         if (br.hasErrors()) {
-            return "admin";
+            return "redirect:/admin";
         }
         userService.saveUser(dto);
+        return "redirect:/admin";
+    }
+
+    @PatchMapping
+    public String updateUser(@Valid UpdateUserRequestDto dto, BindingResult br) {
+        if (br.hasErrors()) {
+            return "redirect:/admin";
+        }
+        userService.updateUser(dto);
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping
+    public String deleteUser(Integer id) {
+        userService.deleteUserById(id);
         return "redirect:/admin";
     }
 }

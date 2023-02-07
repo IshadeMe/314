@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,16 +43,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userMapper.userToUserDetails(userRepository.getReferenceById(id));
     }
 
+    @Transactional
     @Override
     public UserDetailsDto saveUser(CreateUserRequestDto dto) {
         return userMapper.userToUserDetails(userRepository.save(userMapper.createDtoToUser(dto)));
     }
 
+    @Transactional
     @Override
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public UserDetailsDto updateUser(UpdateUserRequestDto dto) {
         return userMapper.userToUserDetails(userRepository.save(userMapper.updateDtoToUser(dto)));
