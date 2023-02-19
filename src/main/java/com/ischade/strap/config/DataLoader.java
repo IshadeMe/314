@@ -11,6 +11,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -30,7 +31,7 @@ public class DataLoader implements ApplicationRunner {
             roleRepository.save(Role.builder().name("ADMIN").build());
             roleRepository.save(Role.builder().name("USER").build());
         }
-        List<Role> roles = roleRepository.findAll();
+        Set<Role> roles = roleRepository.getAll();
         if (userRepository.findAll().isEmpty() || userRepository.findUserByLogin("admin") == null) {
             userRepository.save(User.builder()
                     .login("admin")

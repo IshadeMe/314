@@ -25,10 +25,6 @@ public class Role implements GrantedAuthority {
     @NotBlank
     String name;
 
-    @Transient
-    @ManyToMany(mappedBy = "roles")
-    List<User> users;
-
     @Override
     public String getAuthority() {
         return "ROLE_" + name;
