@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,7 +28,7 @@ public class Role implements GrantedAuthority {
 
     @Transient
     @ManyToMany(mappedBy = "roles")
-    List<User> users;
+    Set<User> users;
 
     @Override
     public String getAuthority() {

@@ -9,6 +9,7 @@ import com.ischade.strap.mapper.UserMapper;
 import com.ischade.strap.model.User;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,11 +63,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = userRepository.findUserByLogin(login);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
+        Hibernate.initialize(user.getRoles());
         return user;
     }
 }

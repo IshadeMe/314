@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Set;
 
 @Builder
 public record UpdateUserRequestDto(
@@ -16,5 +17,5 @@ public record UpdateUserRequestDto(
         @NotBlank @Size(min = 6) String password,
         @Min(1) @Max(120) byte age,
         @NotBlank @Email String email,
-        @NotEmpty List<Role> roles
+        @NotEmpty Set<Role> roles
 ) { }

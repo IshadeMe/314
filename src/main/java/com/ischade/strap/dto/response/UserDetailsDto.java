@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Builder
@@ -15,7 +16,7 @@ public record UserDetailsDto(
         String lastName,
         byte age,
         String email,
-        List<Role> roles
+        Set<Role> roles
 ) {
     public String rolesStr() {
         return roles.stream().map(Object::toString)
