@@ -5,9 +5,8 @@ import com.ischade.strap.model.Role;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -20,7 +19,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
+    public Set<Role> getRoles() {
+        return roleRepository.getAll();
     }
 }
