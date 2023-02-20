@@ -1,21 +1,23 @@
 package com.ischade.strap.controller;
 
 
+import com.ischade.strap.dto.response.UserDetailsDto;
 import com.ischade.strap.model.User;
 import com.ischade.strap.service.RoleService;
 import com.ischade.strap.service.UserService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("api/user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
+
     final UserService userService;
     final RoleService roleService;
 
@@ -24,9 +26,8 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping
-    public String getInfo(Model model, Authentication authentication) {
-        model.addAttribute("current", userService.getUserById(((User) authentication.getPrincipal()).getId()));
-        return "user";
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<UserDetailsDto> getUser(Authentication authentication) {
+        return ResponseEntity.ok(userService.getUserById(((User) authentication.getPrincipal()).getId()));
     }
 }

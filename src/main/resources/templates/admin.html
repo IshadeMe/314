@@ -149,7 +149,6 @@
                                             <div class="mb-3">
                                                 <label for="roles" class="form-label d-flex justify-contentQ-center">Roles</label>
                                                 <select class="form-control" id="roles" multiple>
-                                                    <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.getName()}"/>
                                                 </select>
                                             </div>
                                             <button type="submit" class="btn-success form-control">Add new user</button>
@@ -266,9 +265,6 @@
                                                     class="form-select"
                                                     id="edit_role"
                                                     multiple >
-                                                <option th:each="role:${roles}"
-                                                        th:value="${{role}}"
-                                                        th:text="${role.getName()}"/>
                                             </select>
                                 </div>
                             </form>

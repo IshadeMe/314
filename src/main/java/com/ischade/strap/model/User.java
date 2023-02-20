@@ -56,6 +56,7 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @OrderBy("name asc")
     @Builder.Default Set<Role> roles = new HashSet<>();
 
 

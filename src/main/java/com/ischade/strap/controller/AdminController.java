@@ -2,22 +2,24 @@ package com.ischade.strap.controller;
 
 import com.ischade.strap.dto.request.CreateUserRequestDto;
 import com.ischade.strap.dto.request.UpdateUserRequestDto;
-import com.ischade.strap.model.User;
+import com.ischade.strap.dto.response.UserDetailsDto;
+import com.ischade.strap.model.Role;
 import com.ischade.strap.service.RoleService;
 import com.ischade.strap.service.UserService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/admin")
+import java.util.List;
+import java.util.Set;
+
+@RestController
+@RequestMapping("api/admin")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdminController {
+
     final UserService userService;
     final RoleService roleService;
 
@@ -26,37 +28,34 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping
-    public String getPage(Model model, Authentication auth) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", roleService.getRoles());
-        model.addAttribute("current", userService.getUserById(((User) auth.getPrincipal()).getId()));
-        model.addAttribute("user", CreateUserRequestDto.builder().build());
-        model.addAttribute("update", UpdateUserRequestDto.builder().build());
-        return "admin";
+    // <?> - позволит завернуть ошибку.
+    @GetMapping(value = "/users", produces = "application/json")
+    public ResponseEntity<List<UserDetailsDto>> showAllUsers(){
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping
-    public String createUser(@Valid CreateUserRequestDto dto, BindingResult br) {
-        if (br.hasErrors()) {
-            return "redirect:/admin";
-        }
-        userService.saveUser(dto);
-        return "redirect:/admin";
+    @GetMapping(value = "/users/{id}", produces = "application/json")
+    public ResponseEntity<UserDetailsDto> getUser(@PathVariable int id){
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PatchMapping
-    public String updateUser(@Valid UpdateUserRequestDto dto, BindingResult br) {
-        if (br.hasErrors()) {
-            return "redirect:/admin";
-        }
-        userService.updateUser(dto);
-        return "redirect:/admin";
+    @PostMapping(value = "/users", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UserDetailsDto> createUser(@RequestBody CreateUserRequestDto dto) {
+        return ResponseEntity.ok(userService.saveUser(dto));
     }
 
-    @DeleteMapping
-    public String deleteUser(Integer id) {
-        userService.deleteUserById(id);
-        return "redirect:/admin";
+    @PatchMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UserDetailsDto> updateUser(@RequestBody UpdateUserRequestDto dto, @PathVariable("id") int id) {
+        return ResponseEntity.ok(userService.updateUser(dto));
+    }
+
+    @DeleteMapping(value = "/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<Set<Role>> getRoles() {
+        return ResponseEntity.ok(roleService.getRoles());
     }
 }
